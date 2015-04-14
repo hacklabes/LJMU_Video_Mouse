@@ -14,7 +14,7 @@ int counter = 0;
 
 void setup() {
   size(640, 360);
-  movie = new Movie(this, VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION);
+  movie = new Movie(this, dataPath(VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION));
   movie.jump(movie.duration());
 }
 
@@ -28,7 +28,12 @@ void draw() {
 
 void mousePressed() {
   if (abs(movie.time() - movie.duration()) < 0.1) {
-    movie = new Movie(this, VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION);
+    File f = new File(dataPath(VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION));
+    while (!f.exists ()) {
+      counter = (counter+1)%NUMBER_OF_FILES;
+      f = new File(dataPath(VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION));
+    }
+    movie = new Movie(this, dataPath(VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION));
     movie.play();
     counter = (counter+1)%NUMBER_OF_FILES;
   } else {
@@ -36,5 +41,4 @@ void mousePressed() {
     println(movie.time() +" out of "+ movie.duration());
   }
 }
-
 
