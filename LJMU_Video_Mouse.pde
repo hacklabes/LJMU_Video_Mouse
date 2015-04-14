@@ -16,14 +16,22 @@ void setup() {
   size(640, 360);
   movie = new Movie(this, dataPath(VIDEO_FILE_PREFIX+counter+VIDEO_FILE_EXTENSION));
   movie.jump(movie.duration());
+  background(0);
 }
 
 void draw() {
-  background(0);
   if (movie.available() == true) {
     movie.read();
   }
-  image(movie, 0, 0);
+
+  if (abs(movie.time() - movie.duration()) < 0.1) {
+    fill(0, 4);
+    noStroke();
+    rect(0, 0, width, height);
+  } else {
+    background(0);
+    image(movie, 0, 0);
+  }
 }
 
 void mousePressed() {
